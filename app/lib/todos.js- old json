@@ -1,0 +1,71 @@
+// app/lib/todos.js — a minimal "database" backed by a JSON file
+import { promises as fs } from "fs";
+import path from "path";
+
+const filePath = path.join(process.cwd(), "todos.json");
+
+
+
+// app/lib/todos.js — now backed by Prisma instead of a JSON file
+import { prisma } from "./prisma";
+
+export async function getTodosDb() {
+  return prisma.todo.findMany({ orderBy: { id: "asc" } }); // was: read file + JSON.parse
+}
+
+export async function addTodoDb(text) {
+  return prisma.todo.create({ data: { text } }); // was: push + writeFile. completed defaults to false
+}
+
+export async function getTodos() {
+    try {
+        // const data = await fs.readFile(filePath, "utf-8");  
+        // await simulateDelay(500); // Simulate a delay of 500ms
+        return await getTodosDb();
+        return JSON.parse(data);
+    }
+    catch (error) {
+        console.error("Error reading todos file:", error);
+        return [];
+    }
+}
+
+export async function fetchTodosById(id) {
+    const todos = await getTodos();
+    return todos.find(todo => todo.id === id) || null;
+}
+
+export async function addTodo(text){
+    const todos = await getTodos();
+    const newTodo = { id: Date.now(), text };
+    todos.push(newTodo);
+
+    await saveTodo(todos);
+}
+
+const simulateDelay = (ms) => new Promise(res => setTimeout(res, ms)); 
+
+export async function saveTodo(todos){
+    await simulateDelay(500); // Simulate a delay of 500ms
+    await fs.writeFile(filePath, JSON.stringify(todos, null, 2));
+}
+
+export async function deleteTodo(id){
+    const todos = await getTodos();
+    await saveTodo(await todos.filter(todo => todo.id !== id));
+}
+
+export async function toogleTodo(id){
+    const todos = await getTodos();
+    const todo = todos.find(todo => todo.id === id);
+    if (todo) {
+        todo.completed = !todo.completed;
+        await saveTodo(todos);
+    }
+}
+
+export async function updateTodo(id, newText){
+    const todos = await getTodos();
+    const updatedTodos = todos.map(todo => todo.id === id ? {...todo, text: newText} : todo);
+    await saveTodo(updatedTodos);
+}

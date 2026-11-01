@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Todo {
+  id        Int      @id @default(autoincrement())
+  text      String
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  userId Int? // 1. the real column (the foreign key)
+  user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  //     ↑ 2. the relation field: "this todo's `userId` column points at User's `id`"
+  //   onDelete: Cascade means deleting a user also deletes their todos, 
+  @@index([userId]) // 3. model-level: speeds up "all todos of user X"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  todos     Todo[]
+}

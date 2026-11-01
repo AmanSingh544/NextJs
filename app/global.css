@@ -1,0 +1,77 @@
+/* app/global.css — styles that apply to the WHOLE app.
+   Imported once, in app/layout.js. */
+
+/* 1. Design tokens: define each color ONCE, reuse everywhere with var(--name). */
+:root {
+    --bg: #14171c;
+    --surface: #1d222a;
+    --surface-hover: #262c36;
+    --border: #343b47;
+    --text: #e6e8eb;
+    --muted: #9aa3b0;
+    --accent: #4a63e0;
+    --accent-hover: #3a50c8;
+    --danger: #ff8a8a;
+
+    color-scheme: dark;
+}
+
+/* 2. Reset: make width/height include padding + border (far less surprising). */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 2rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+/* 3. Element defaults, so plain <button>, <input> and <a> already look consistent.
+      Component-specific tweaks go in CSS Modules. */
+a {
+    color: var(--accent-hover);
+}
+
+a:hover {
+    color: var(--text);
+}
+
+button {
+    padding: 0.4rem 0.8rem;
+    font: inherit;
+    color: #fff;
+    background-color: var(--accent);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+    background-color: var(--accent-hover);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+input {
+    padding: 0.4rem 0.6rem;
+    font: inherit;
+    color: var(--text);
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+}
+
+input:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}

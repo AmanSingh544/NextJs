@@ -1,0 +1,84 @@
+/* components/TodoItem.module.css — scoped to TodoItem only.
+   Next.js turns each class below into a unique name, so these can't clash. */
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.row:hover {
+    background-color: var(--surface-hover);
+}
+
+/* The text area grows to fill the free space, pushing actions to the right. */
+.content {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.text {
+    flex: 1;
+    overflow-wrap: anywhere;
+}
+
+/* Applied only when the todo is completed. */
+.done {
+    color: var(--muted);
+    text-decoration: line-through;
+}
+
+.editForm {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.editForm input {
+    flex: 1;
+    min-width: 12rem;
+}
+
+.error {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--danger);
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* The ⬜ / ✅ / 🗑️ buttons: just the icon, no filled background. */
+.iconButton {
+    padding: 0.25rem;
+    font-size: 1.1rem;
+    line-height: 1;
+    background: none;
+}
+
+.iconButton:hover:not(:disabled) {
+    background-color: var(--border);
+}
+
+/* "Cancel" and "Edit": quieter than the main action. */
+.secondary {
+    background-color: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.secondary:hover:not(:disabled) {
+    background-color: var(--border);
+}
